@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plan de Streaming - Twitch</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #18181c;
+            --twitch-purple: #9146ff;
+            --twitch-hover: #772ce8;
+            --text-color: #efeff1;
+            --text-muted: #adadb8;
+            --accent-cyan: #00f5d4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1f1f23 0%, #0f0f12 100%);
+            border-bottom: 2px solid var(--twitch-purple);
+            padding: 2.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header h1 span {
+            color: var(--twitch-purple);
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h2 {
+            color: #fff;
+            border-left: 4px solid var(--twitch-purple);
+            padding-left: 0.5rem;
+            margin-top: 2rem;
+            font-size: 1.8rem;
+        }
+
+        /* Tabla de Horarios */
+        .table-container {
+            overflow-x: auto;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 2.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+        }
+
+        th {
+            background-color: var(--twitch-purple);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr {
+            border-bottom: 1px solid #26262c;
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #202025;
+        }
+
+        .tag-sesion {
+            background-color: #2a2a32;
+            color: var(--accent-cyan);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* Grid de Consejos */
+        .grid-consejos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-top: 3px solid #2a2a32;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-top-color: var(--twitch-purple);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card ul {
+            padding-left: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .card li strong {
+            color: var(--text-color);
+        }
+
+        /* Alerta Final */
+        .alerta {
+            background: linear-gradient(90deg, #1f1435 0%, #18181c 100%);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 2rem;
+        }
+
+        .alerta h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+        }
+
+        .alerta p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #585863;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+            border-top: 1px solid #1f1f23;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            th, td { padding: 0.75rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mi Plan de <span>Streaming</span></h1>
+        <p>Calendario y Estrategia para el Fin de Semana en Twitch</p>
+    </header>
+
+    <main>
+        
+        <h2>📅 Horario de Directos: "El Maratón del Guerrero"</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Día y Hora</th>
+                        <th>Videojuego</th>
+                        <th>Objetivo / Título del Stream</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag-sesion">Vie - Sáb | 23:00 - 01:00</span></td>
+                        <td><strong>The Simpsons Hit & Run</strong></td>
+                        <td>"Nostalgia Nocturna" – Empezar de cero. Ideal para charlar con el chat mientras haces locuras con Homer.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-sesion">Sábado | 10:00 - 13:00</span></td>
+                        <td><strong>Age of Empires 2 DE</strong></td>
+                        <td>"Café y Conquista" – Terminar la misión 4 de Sargón. Ambiente más chill pero enfocado en la estrategia.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-sesion">Sábado | 18:00 - 22:00</span></td>
+                        <td><strong>Assassin's Creed Odyssey</strong></td>
+                        <td>"Grecia en Llamas" – Avanzar fuerte en la historia principal (mitad de campaña). Tu bloque "Prime".</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-sesion">Sáb - Dom | 23:00 - 01:00</span></td>
+                        <td><strong>Mafia: Definitive Edition</strong></td>
+                        <td>"Cine de Medianoche" – Estreno del juego. La atmósfera de Lost Heaven encaja perfecto con la noche.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-sesion">Domingo | 18:00 - 22:00</span></td>
+                        <td><strong>Variedad (Tu favorito)</strong></td>
+                        <td>"El Gran Cierre" – Elige el que más te haya gustado o sigue con AC Odyssey si te quedaste en un punto tenso.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>💡 Ideas para Divertir y Atraer Público</h2>
+        <div class="grid-consejos">
+            
+            <div class="card">
+                <h3>🎮 1. Dinámicas de "Reto o Castigo"</h3>
+                <ul>
+                    <li><strong>En AC Odyssey:</strong> Si mueres en combate, el chat elige tu arma por 10 min (ej. solo puños o arco).</li>
+                    <li><strong>En Simpsons Hit & Run:</strong> Por cada misión fallida o coche explotado, haces 5 flexiones o bebes un vaso de agua.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>🧲 2. Títulos con Gancho (Clickbait Sano)</h3>
+                <ul>
+                    <li><em>"¿Es mejor que el original? Estrenando MAFIA Definitive Edition"</em></li>
+                    <li><em>"Sargón me está destrozando la vida (AoE 2 Misión 4)"</em></li>
+                    <li><em>"Casi atropello a Flanders: Nostalgia pura en The Simpsons"</em></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>📊 3. El Poder de las Encuestas</h3>
+                <ul>
+                    <li><strong>Decisiones clave:</strong> En AC Odyssey, cuando toque elegir un diálogo importante, ¡vota con el chat!</li>
+                    <li><strong>Fidelización:</strong> Aunque salga la peor opción, ver que su voto influye los mantendrá pegados a la pantalla.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>🔮 4. Predicciones (Puntos de Canal)</h3>
+                <ul>
+                    <li>Activa apuestas divertidas como: <em>¿Sobreviviré a este asedio en AoE?</em> (Sí / No).</li>
+                    <li>O también: <em>¿Cuántas veces me detectarán en la siguiente misión de Mafia?</em></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="alerta">
+            <h4>🛠️ Consejo de Pro:</h4>
+            <p>Como vas a jugar a <strong>Mafia</strong> y <strong>The Simpsons</strong> por primera vez, asegúrate de configurar bien en tu OBS las alertas de "Primer seguidor" y "Primer raid". ¡Esos momentos de descubrimiento genuino son imanes para la comunidad!</p>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>¡A romperla en Twitch este fin de semana! 🚀</p>
+    </footer>
+
+</body>
+</html>
