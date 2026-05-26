@@ -13,6 +13,8 @@
             --text-color: #efeff1;
             --text-muted: #adadb8;
             --accent-cyan: #00f5d4;
+            --error-red: #eb0400;
+            --success-green: #00f5d4;
         }
 
         body {
@@ -29,6 +31,7 @@
             border-bottom: 2px solid var(--twitch-purple);
             padding: 2.5rem 1rem;
             text-align: center;
+            position: relative;
         }
 
         header h1 {
@@ -49,6 +52,72 @@
             font-size: 1.1rem;
         }
 
+        /* Botón de Modo Edición Panel */
+        .admin-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .btn {
+            background-color: var(--twitch-purple);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--twitch-hover);
+        }
+
+        .btn-admin-active {
+            background-color: #ffe600;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 230, 0, 0.4);
+        }
+
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .btn-add {
+            background-color: #2a2a32;
+            border: 1px dashed var(--twitch-purple);
+            color: var(--text-color);
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 2.5rem;
+            display: none;
+        }
+
+        .btn-delete {
+            background-color: rgba(235, 4, 0, 0.2);
+            color: #ff8080;
+            border: 1px solid var(--error-red);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none;
+        }
+
         main {
             max-width: 1000px;
             margin: 2rem auto;
@@ -59,17 +128,38 @@
             color: #fff;
             border-left: 4px solid var(--twitch-purple);
             padding-left: 0.5rem;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             font-size: 1.8rem;
         }
 
-        /* Tabla de Horarios */
+        /* Contenedor del Stream en Vivo */
+        .twitch-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(145, 70, 255, 0.3);
+            margin-bottom: 2.5rem;
+            background: #000;
+        }
+
+        .twitch-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Tabla de Horarios Responsiva */
         .table-container {
             overflow-x: auto;
             background-color: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-bottom: 2.5rem;
+            margin-bottom: 1rem;
         }
 
         table {
@@ -80,6 +170,7 @@
 
         th, td {
             padding: 1rem 1.5rem;
+            vertical-align: top;
         }
 
         th {
@@ -99,8 +190,12 @@
             border-bottom: none;
         }
 
-        tr:hover {
-            background-color: #202025;
+        /* Estilos de edición interactiva */
+        [contenteditable="true"] {
+            background-color: rgba(145, 70, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.2rem;
+            outline: 1px dashed var(--twitch-purple);
         }
 
         .tag-sesion {
@@ -118,7 +213,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1rem;
         }
 
         .card {
@@ -127,21 +222,13 @@
             padding: 1.5rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-top: 3px solid #2a2a32;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            border-top-color: var(--twitch-purple);
+            position: relative;
         }
 
         .card h3 {
             margin-top: 0;
             color: #fff;
             font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .card ul {
@@ -152,10 +239,6 @@
         .card li {
             margin-bottom: 0.5rem;
             color: var(--text-muted);
-        }
-
-        .card li strong {
-            color: var(--text-color);
         }
 
         /* Alerta Final */
@@ -188,8 +271,8 @@
         }
 
         @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            th, td { padding: 0.75rem 1rem; }
+            header h1 { font-size: 1.8rem; }
+            th, td { padding: 0.6rem 0.8rem; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -200,8 +283,15 @@
         <p>Calendario y Estrategia para el Fin de Semana en Twitch</p>
     </header>
 
+    <div class="admin-panel">
+        <button class="btn" id="btn-toggle-admin" onclick="toggleModoAdmin()">🛠️ Modo Móvil Editor</button>
+    </div>
+
     <main>
         
+        <h2>🔴 En Vivo / Último Directo</h2>
+        <div class="twitch-container" id="twitch-embed"></div>
+
         <h2>📅 Horario de Directos: "El Maratón del Guerrero"</h2>
         <div class="table-container">
             <table>
@@ -209,76 +299,20 @@
                     <tr>
                         <th>Día y Hora</th>
                         <th>Videojuego</th>
-                        <th>Objetivo / Título del Stream</th>
+                        <th>Objetivo / Título</th>
+                        <th class="col-delete" style="display: none; width: 50px;">Acción</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="tag-sesion">Vie - Sáb | 23:00 - 01:00</span></td>
-                        <td><strong>The Simpsons Hit & Run</strong></td>
-                        <td>"Nostalgia Nocturna" – Empezar de cero. Ideal para charlar con el chat mientras haces locuras con Homer.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="tag-sesion">Sábado | 10:00 - 13:00</span></td>
-                        <td><strong>Age of Empires 2 DE</strong></td>
-                        <td>"Café y Conquista" – Terminar la misión 4 de Sargón. Ambiente más chill pero enfocado en la estrategia.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="tag-sesion">Sábado | 18:00 - 22:00</span></td>
-                        <td><strong>Assassin's Creed Odyssey</strong></td>
-                        <td>"Grecia en Llamas" – Avanzar fuerte en la historia principal (mitad de campaña). Tu bloque "Prime".</td>
-                    </tr>
-                    <tr>
-                        <td><span class="tag-sesion">Sáb - Dom | 23:00 - 01:00</span></td>
-                        <td><strong>Mafia: Definitive Edition</strong></td>
-                        <td>"Cine de Medianoche" – Estreno del juego. La atmósfera de Lost Heaven encaja perfecto con la noche.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="tag-sesion">Domingo | 18:00 - 22:00</span></td>
-                        <td><strong>Variedad (Tu favorito)</strong></td>
-                        <td>"El Gran Cierre" – Elige el que más te haya gustado o sigue con AC Odyssey si te quedaste en un punto tenso.</td>
-                    </tr>
-                </tbody>
+                <tbody id="tabla-horarios">
+                    </tbody>
             </table>
         </div>
+        <button class="btn-add" id="btn-add-horario" onclick="añadirFilaHorario()">➕ Añadir Nueva Sesión</button>
 
         <h2>💡 Ideas para Divertir y Atraer Público</h2>
-        <div class="grid-consejos">
-            
-            <div class="card">
-                <h3>🎮 1. Dinámicas de "Reto o Castigo"</h3>
-                <ul>
-                    <li><strong>En AC Odyssey:</strong> Si mueres en combate, el chat elige tu arma por 10 min (ej. solo puños o arco).</li>
-                    <li><strong>En Simpsons Hit & Run:</strong> Por cada misión fallida o coche explotado, haces 5 flexiones o bebes un vaso de agua.</li>
-                </ul>
+        <div class="grid-consejos" id="contenedor-consejos">
             </div>
-
-            <div class="card">
-                <h3>🧲 2. Títulos con Gancho (Clickbait Sano)</h3>
-                <ul>
-                    <li><em>"¿Es mejor que el original? Estrenando MAFIA Definitive Edition"</em></li>
-                    <li><em>"Sargón me está destrozando la vida (AoE 2 Misión 4)"</em></li>
-                    <li><em>"Casi atropello a Flanders: Nostalgia pura en The Simpsons"</em></li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>📊 3. El Poder de las Encuestas</h3>
-                <ul>
-                    <li><strong>Decisiones clave:</strong> En AC Odyssey, cuando toque elegir un diálogo importante, ¡vota con el chat!</li>
-                    <li><strong>Fidelización:</strong> Aunque salga la peor opción, ver que su voto influye los mantendrá pegados a la pantalla.</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>🔮 4. Predicciones (Puntos de Canal)</h3>
-                <ul>
-                    <li>Activa apuestas divertidas como: <em>¿Sobreviviré a este asedio en AoE?</em> (Sí / No).</li>
-                    <li>O también: <em>¿Cuántas veces me detectarán en la siguiente misión de Mafia?</em></li>
-                </ul>
-            </div>
-
-        </div>
+        <button class="btn-add" id="btn-add-consejo" onclick="añadirBloqueConsejo()">➕ Añadir Nueva Tarjeta de Ideas</button>
 
         <div class="alerta">
             <h4>🛠️ Consejo de Pro:</h4>
@@ -288,8 +322,161 @@
     </main>
 
     <footer>
-        <p>¡A romperla en Twitch este fin de semana! 🚀</p>
+        <p>¡A romperla en Twitch, AlkinGamingTV! 🚀</p>
     </footer>
 
+    <script>
+        const CANAL_TWITCH = "alkingamingtv"; 
+        let modoAdminActivo = false;
+
+        // Datos por defecto si la app se abre por primera vez
+        const HORARIOS_POR_DEFECTO = [
+            { fecha: "Vie - Sáb | 23:00 - 01:00", juego: "The Simpsons Hit & Run", detalles: "'Nostalgia Nocturna' – Empezar de cero." },
+            { fecha: "Sábado | 10:00 - 13:00", juego: "Age of Empires 2 DE", detalles: "'Café y Conquista' – Misión 4." },
+            { fecha: "Sábado | 18:00 - 22:00", juego: "Assassin's Creed Odyssey", detalles: "'Grecia en Llamas' – Bloque Prime." },
+            { fecha: "Sáb - Dom | 23:00 - 01:00", juego: "Mafia: Definitive Edition", detalles: "'Cine de Medianoche' – Estreno." },
+            { fecha: "Domingo | 18:00 - 22:00", juego: "Variedad (Tu favorito)", detalles: "'El Gran Cierre'." }
+        ];
+
+        const CONSEJOS_POR_DEFECTO = [
+            {
+                titulo: "🎮 1. Dinámicas de 'Reto o Castigo'",
+                puntos: [
+                    "Si mueres en AC Odyssey, el chat elige tu arma.",
+                    "En Simpsons, 5 flexiones por coche explotado."
+                ]
+            },
+            {
+                titulo: "🧲 2. Títulos con Gancho",
+                puntos: [
+                    "¿Es mejor que el original? Estrenando MAFIA",
+                    "Sargón me está destrozando la vida (AoE 2)"
+                ]
+            }
+        ];
+
+        // Cargar datos desde localStorage o usar los de defecto
+        let datosHorarios = JSON.parse(localStorage.getItem('stream_horarios')) || HORARIOS_POR_DEFECTO;
+        let datosConsejos = JSON.parse(localStorage.getItem('stream_consejos')) || CONSEJOS_POR_DEFECTO;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderizarTodo();
+            cargarTwitch();
+        });
+
+        function renderizarTodo() {
+            // Renderizar Horarios
+            const tabla = document.getElementById('tabla-horarios');
+            tabla.innerHTML = "";
+            datosHorarios.forEach((item, index) => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td><span class="tag-sesion" contenteditable="${modoAdminActivo}" onblur="guardarCambioHorario(${index}, 'fecha', this)">${item.fecha}</span></td>
+                    <td><strong contenteditable="${modoAdminActivo}" onblur="guardarCambioHorario(${index}, 'juego', this)">${item.juego}</strong></td>
+                    <td contenteditable="${modoAdminActivo}" onblur="guardarCambioHorario(${index}, 'detalles', this)">${item.detalles}</td>
+                    <td class="col-delete" style="display: ${modoAdminActivo ? 'table-cell' : 'none'}">
+                        <button class="btn-delete" style="display: block" onclick="eliminarHorario(${index})">🗑️</button>
+                    </td>
+                `;
+                tabla.appendChild(fila);
+            });
+
+            // Renderizar Consejos
+            const contenedor = document.getElementById('contenedor-consejos');
+            contenedor.innerHTML = "";
+            datosConsejos.forEach((item, idxCard) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let liHTML = '';
+                item.puntos.forEach((punto, idxPunto) => {
+                    liHTML += `<li contenteditable="${modoAdminActivo}" onblur="guardarCambioPunto(${idxCard}, ${idxPunto}, this)">${punto}</li>`;
+                });
+
+                card.innerHTML = `
+                    <h3 contenteditable="${modoAdminActivo}" onblur="guardarCambioTituloConsejo(${idxCard}, this)">${item.titulo}</h3>
+                    <ul>${liHTML}</ul>
+                    <button class="btn-action btn-delete" style="display: ${modoAdminActivo ? 'block' : 'none'}" onclick="eliminarTarjetaConsejo(${idxCard})">🗑️ Eliminar Tarjeta</button>
+                    <button class="btn-action" style="display: ${modoAdminActivo ? 'block' : 'none'}" onclick="añadirPuntoAConsejo(${idxCard})">➕ Añadir Viñeta</button>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        // =========================================================
+        // FUNCTIONS MODO ADMINISTRADOR (INTERFAZ)
+        // =========================================================
+        function toggleModoAdmin() {
+            modoAdminActivo = !modoAdminActivo;
+            const btn = document.getElementById('btn-toggle-admin');
+            const btnsAdd = document.querySelectorAll('.btn-add');
+            const colsDelete = document.querySelectorAll('.col-delete');
+
+            if (modoAdminActivo) {
+                btn.textContent = "💾 Guardar Cambios";
+                btn.classList.add('btn-admin-active');
+                btnsAdd.forEach(b => b.style.display = "block");
+                colsDelete.forEach(c => c.style.display = "table-cell");
+            } else {
+                btn.textContent = "🛠️ Modo Móvil Editor";
+                btn.classList.remove('btn-admin-active');
+                btnsAdd.forEach(b => b.style.display = "none");
+                colsDelete.forEach(c => c.style.display = "none");
+                // Persistencia final
+                localStorage.setItem('stream_horarios', JSON.stringify(datosHorarios));
+                localStorage.setItem('stream_consejos', JSON.stringify(datosConsejos));
+            }
+            renderizarTodo();
+        }
+
+        // CONTROL DE HORARIOS
+        function guardarCambioHorario(index, campo, elemento) {
+            datosHorarios[index][campo] = elemento.textContent;
+        }
+
+        function añadirFilaHorario() {
+            datosHorarios.push({ fecha: "Nuevo Día | Hora", juego: "Nuevo Juego", detalles: "Haz clic aquí para cambiar los objetivos." });
+            renderizarTodo();
+        }
+
+        function eliminarHorario(index) {
+            datosHorarios.splice(index, 1);
+            renderizarTodo();
+        }
+
+        // CONTROL DE IDEAS / CONSEJOS
+        function guardarCambioTituloConsejo(index, elemento) {
+            datosConsejos[index].titulo = elemento.textContent;
+        }
+
+        function guardarCambioPunto(idxCard, idxPunto, elemento) {
+            datosConsejos[idxCard].puntos[idxPunto] = elemento.textContent;
+        }
+
+        function añadirBloqueConsejo() {
+            datosConsejos.push({ titulo: "💡 Nueva Categoría", puntos: ["Edita este consejo en tu pantalla."] });
+            renderizarTodo();
+        }
+
+        function añadirPuntoAConsejo(idxCard) {
+            datosConsejos[idxCard].puntos.push("Nueva idea añadida.");
+            renderizarTodo();
+        }
+
+        function eliminarTarjetaConsejo(index) {
+            datosConsejos.splice(index, 1);
+            renderizarTodo();
+        }
+
+        // CARGA SEGURA DEL IFRAME DE TWITCH
+        function cargarTwitch() {
+            let hostActual = window.location.hostname || "localhost";
+            document.getElementById('twitch-embed').innerHTML = `
+                <iframe 
+                    src="https://player.twitch.tv/?channel=${CANAL_TWITCH}&parent=${hostActual}&parent=127.0.0.1&parent=localhost&autoplay=true&muted=false" 
+                    height="100%" width="100%" allowfullscreen="true">
+                </iframe>`;
+        }
+    </script>
 </body>
 </html>
